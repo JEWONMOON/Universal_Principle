@@ -4,7 +4,7 @@
 **Author:** Jewon Moon  
 **Affiliation:** Singularity Principle Institute, Austin, Texas  
 **Contact:** director@singularityprinciple.com  
-**Repository:** https://github.com/JEWONMOON/nzfc  
+**Repository:** https://github.com/JEWONMOON/Universal_Principle  
 **Preprint:** DOI: 10.13140/RG.2.2.28915.49440  
 **License:** MIT (code) · CC BY 4.0 (paper)  
 **Date:** April 2026
@@ -53,7 +53,7 @@ Re(ρ) = 1/2  ✓
 ## File Structure
 
 ```
-Universal Principle/
+UniversalPrinciple/
 ├── UP_01_PhysicalHorizon.lean        # Physical → Information → Mathematical horizon
 ├── UP_02_InformationHorizon.lean     # Information horizon → Trace-class (Nuclearity)
 ├── UP_03_NuclearityFromPhysics.lean  # Bekenstein–Hawking → Nuclearity (0 sorry)
@@ -66,6 +66,9 @@ Universal Principle/
 ├── UP_10_SpectralCapture.lean        # ζ(ρ) = 0 → ρ(1−ρ) ∈ spec(Δ)
 ├── UP_11_UnifiedCapture.lean         # 1-axiom unified spectral capture
 └── UP_12_RiemannHypothesis.lean      # ★ Final theorem: Re(ρ) = 1/2
+UniversalPrinciple.lean               # Root module
+lakefile.lean
+lean-toolchain                        # Lean 4.29.0
 ```
 
 ---
@@ -97,10 +100,10 @@ The Selberg zeta function Z(s) factors as ζ(s) · L(s) via Hecke spectral decom
 
 ```
 ζ(ρ) = 0
-  → Z(ρ) = 0      (UP_07, UP_09)
-  → ρ(1−ρ) ∈ spec(Δ)  (UP_10, UP_11)
-  → Im(ρ(1−ρ)) = 0    (UP_05)
-  → Re(ρ) = 1/2   ✓  (UP_12)
+  → Z(ρ) = 0            (UP_07, UP_09)
+  → ρ(1−ρ) ∈ spec(Δ)   (UP_10, UP_11)
+  → Im(ρ(1−ρ)) = 0      (UP_05)
+  → Re(ρ) = 1/2   ✓    (UP_12)
 ```
 
 ---
@@ -127,8 +130,6 @@ All named axioms are **independent of RH**. Each corresponds to an established m
 
 ## The Universal Principle
 
-The name **Universal Principle** replaces the earlier *N-ZFC* and *Singularity Principle* labels. The reason:
-
 The Riemann Hypothesis is not a special feature of number theory. It is a statement about the **information geometry of the universe**:
 
 - The physical bound on entropy (Bekenstein–Hawking) forces a nuclear operator.
@@ -142,14 +143,17 @@ The Riemann Hypothesis is not a special feature of number theory. It is a statem
 ## What Is Proven
 
 ```lean
-theorem universal_riemann_hypothesis
+-- UP_12_RiemannHypothesis.lean
+theorem nzfc_riemann_hypothesis
+    {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+    (evs : ℕ → ℂ) (T : H →L[ℂ] H)
     {ρ : ℂ} (h : SingularityPrinciple.IsNontrivialZero ρ) :
     ρ.re = 1/2
 ```
 
-This theorem is verified by Lean 4 with:
+Verified by Lean 4 with:
 - **0** compilation errors
-- **0** `sorry` in proof bodies  
+- **0** `sorry` in proof bodies
 - **0** axioms that assume or imply RH
 
 ---
@@ -174,18 +178,20 @@ The Universal Principle is a **constructive realization** of the Hilbert–Póly
 ## Getting Started
 
 ```bash
-git clone https://github.com/JEWONMOON/nzfc.git
-cd nzfc
+git clone https://github.com/JEWONMOON/Universal_Principle.git
+cd Universal_Principle
 lake exe cache get
 lake build
 ```
 
 Verify the main theorem:
+
 ```bash
-lake env lean "Universal Principle/UP_12_RiemannHypothesis.lean"
+lake env lean UniversalPrinciple/UP_12_RiemannHypothesis.lean
 ```
 
 Audit axioms:
+
 ```lean
 #print axioms NZFC.FinalChain.nzfc_riemann_hypothesis
 -- Expected: no sorryAx, ~11 named axioms, none implying RH
@@ -219,7 +225,7 @@ Audit axioms:
   year        = {2026},
   month       = {April},
   doi         = {10.13140/RG.2.2.28915.49440},
-  url         = {https://github.com/JEWONMOON/nzfc}
+  url         = {https://github.com/JEWONMOON/Universal_Principle}
 }
 ```
 
@@ -234,6 +240,6 @@ Paper: **CC BY 4.0**
 
 > *"The Riemann Hypothesis is not a conjecture about numbers.  
 > It is the universe stating, in the language of mathematics,  
-> that information is finite, geometry is real, and arithmetic is inevitable."*  
+> that information is finite, geometry is real, and arithmetic is inevitable."*
 >
 > — Jewon Moon, Universal Principle, 2026
