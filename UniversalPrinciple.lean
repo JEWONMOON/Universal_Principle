@@ -1,0 +1,15 @@
+-- Universal Principle
+-- Root module: imports all layers in order
+
+import UniversalPrinciple.UP_01_PhysicalHorizon
+import UniversalPrinciple.UP_02_InformationHorizon
+import UniversalPrinciple.UP_03_NuclearityFromPhysics
+import UniversalPrinciple.UP_04_ZeroOffAxis
+import UniversalPrinciple.UP_05_SelfAdjointGeometry
+import UniversalPrinciple.UP_06_FredholmKernel
+import UniversalPrinciple.UP_07_EulerFactorization
+import UniversalPrinciple.UP_08_SelbergDeterminant
+import UniversalPrinciple.UP_09_HeckeDecomposition
+import UniversalPrinciple.UP_10_SpectralCapture
+import UniversalPrinciple.UP_11_UnifiedCapture
+import UniversalPrinciple.UP_12_RiemannHypothesis
