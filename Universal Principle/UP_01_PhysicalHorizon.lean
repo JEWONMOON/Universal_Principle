@@ -19,9 +19,9 @@
                     series is itself summable — this is Nuclearity.
 
   The three horizons are named after their domain:
-    • PhysicalHorizon    — energy suppression from Bekenstein–Hawking
-    • HasInformationHorizon — exponential decay condition
-    • IsMathematicalHorizon — Summable (trace-class condition)
+    • PhysicalHorizon        — energy suppression from Bekenstein–Hawking
+    • HasInformationHorizon  — exponential decay condition
+    • IsMathematicalHorizon  — Summable (trace-class condition)
 
   All theorems in this file are proved without sorry and without
   domain-specific axioms beyond standard Mathlib.
@@ -65,11 +65,11 @@ namespace SingularityPrinciple.ThreeHorizons
 
 structure PhysicalHorizon where
   /-- Maximum energy scale set by the causal horizon (E_horizon > 0). -/
-  E_horizon       : ℝ
-  hE              : 0 < E_horizon
+  E_horizon        : ℝ
+  hE               : 0 < E_horizon
   /-- Exponential suppression rate α > 0 (related to Hawking temperature). -/
   suppression_rate : ℝ
-  hRate           : 0 < suppression_rate
+  hRate            : 0 < suppression_rate
 
 namespace PhysicalHorizon
 
@@ -173,20 +173,20 @@ theorem mathematicalHorizon_of_informationHorizon
     [H : HasInformationHorizon spectrum] :
     IsMathematicalHorizon spectrum := by
   rcases H.exponential_decay with ⟨C, α, hC, hα, h_bound⟩
-  -- Rewrite exp(−α·n) = exp(−α)ⁿ using the identity exp(r·n) = exp(r)ⁿ
+  
+  -- [FIX] 적용 대상과의 타입 불일치를 막기 위해 역방향 적용 및 교환 법칙 강제
   have h_comparison : ∀ n, spectrum n ≤ C * (Real.exp (-α)) ^ n := by
     intro n
-    have h_exp : Real.exp (-α * n) = (Real.exp (-α)) ^ n := by
-      rw [mul_comm (-α) (n : ℝ)]
-      exact Real.exp_nat_mul (-α) n
-    calc spectrum n ≤ C * Real.exp (-α * n) := h_bound n
-      _ = C * (Real.exp (-α)) ^ n           := by rw [h_exp]
+    rw [← Real.exp_nat_mul, mul_comm (n : ℝ) (-α)]
+    exact h_bound n
+
   -- The geometric series converges because exp(−α) ∈ (0, 1)
   have h_ratio_lt_one : Real.exp (-α) < 1 :=
     Real.exp_lt_one_iff.mpr (neg_lt_zero.mpr hα)
   have h_ratio_nonneg : 0 ≤ Real.exp (-α) := (Real.exp_pos (-α)).le
   have h_geom : Summable (fun n => C * (Real.exp (-α)) ^ n) :=
     (summable_geometric_of_lt_one h_ratio_nonneg h_ratio_lt_one).mul_left C
+    
   -- Comparison test: 0 ≤ σₙ ≤ C·rⁿ and Σ C·rⁿ < ∞ implies Σ σₙ < ∞
   exact Summable.of_nonneg_of_le h_pos h_comparison h_geom
 
@@ -214,7 +214,7 @@ theorem mathematicalHorizon_of_physicalHorizon
 
   A `TripleHorizonVacuum` packages all three horizons together with a
   spectrum that satisfies all three simultaneously.  The fields are:
-    • spectrum     : ℕ → ℝ   — eigenvalue sequence
+    • spectrum      : ℕ → ℝ  — eigenvalue sequence
     • spectrum_pos             — all eigenvalues ≥ 0 (energy is non-negative)
     • physHorizon              — the Bekenstein–Hawking envelope
     • phys_bound               — spectrum ≤ envelope (bound is witnessed)
